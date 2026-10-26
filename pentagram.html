@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rotating Pentagram</title>
+  <style>
+    :root { --bg: #0f1115; --fg: #e8b04a; }
+    @media (prefers-color-scheme: light) { :root { --bg: #f6f4ef; --fg: #b5651d; } }
+    html, body { height: 100%; margin: 0; }
+    body { display: grid; place-items: center; background: var(--bg); }
+    svg { width: min(80vmin, 480px); height: auto; }
+    .spin { transform-origin: 0 0; animation: spin 8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) { .spin { animation: none; } }
+  </style>
+</head>
+<body>
+  <svg viewBox="-110 -110 220 220" role="img" aria-label="Rotating pentagram">
+    <g class="spin" fill="none" stroke="var(--fg)" stroke-width="3" stroke-linejoin="round">
+      <circle r="100"/>
+      <polygon id="star"/>
+    </g>
+  </svg>
+  <script>
+    // Connect every second vertex of a regular pentagon to draw the star.
+    const r = 100, points = [];
+    for (let i = 0; i < 5; i++) {
+      const a = -Math.PI / 2 + i * 2 * (2 * Math.PI / 5);
+      points.push(`${(r * Math.cos(a)).toFixed(2)},${(r * Math.sin(a)).toFixed(2)}`);
+    }
+    document.getElementById('star').setAttribute('points', points.join(' '));
+  </script>
+</body>
+</html>
